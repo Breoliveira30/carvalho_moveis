@@ -114,20 +114,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="bg-white p-6 rounded-xl shadow-lg">
               <h3 className="text-xl font-bold text-amber-900 mb-4 flex items-center gap-2">
                 <Shield className="text-green-600" size={22} />
-                Garantias e Benefícios
+                Benefícios
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
                   <Award className="text-green-600" size={18} />
-                  <span className="text-sm font-medium text-green-800">Garantia de 2 anos</span>
+                  <span className="text-sm font-medium text-green-800">Suporte dedicado pós-venda</span>
                 </div>
                 <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
                   <Truck className="text-blue-600" size={18} />
-                  <span className="text-sm font-medium text-blue-800">Entrega grátis*</span>
+                  <span className="text-sm font-medium text-blue-800"> Frete rápido e seguro*</span>
                 </div>
                 <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
                   <Clock className="text-purple-600" size={18} />
-                  <span className="text-sm font-medium text-purple-800">Montagem inclusa</span>
+                  <span className="text-sm font-medium text-purple-800">Montagem Rapida</span>
                 </div>
                 <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
                   <Star className="text-orange-600" size={18} />
@@ -199,8 +199,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </ul>
             <div className="p-4 bg-green-50 rounded-lg border border-green-200">
               <p className="text-sm text-green-800 leading-relaxed">
-                <strong>MDF:</strong> Material de alta densidade, muito resistente e durável, ideal para móveis de
-                qualidade superior.
+                <strong>Obs:</strong> Produzido com materiais de altíssima qualidade, de alta densidade, extremamente resistente e durável, ideal para móveis de padrão superior.
               </p>
             </div>
           </div>
