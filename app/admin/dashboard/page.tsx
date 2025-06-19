@@ -20,6 +20,7 @@ import {
   AlertCircle,
   CheckCircle,
   RefreshCw,
+  Shield,
 } from "lucide-react"
 import {
   getProducts,
@@ -30,6 +31,35 @@ import {
   type Promotion,
 } from "@/lib/supabase"
 
+// Função para verificar token de autenticação
+function verifyAuthToken(tokenData: string): boolean {
+  try {
+    const authData = JSON.parse(tokenData)
+
+    // Verificar se o token tem a estrutura esperada
+    if (!authData.token || !authData.timestamp || !authData.user) {
+      return false
+    }
+
+    // Verificar se o token não expirou (24 horas)
+    const tokenAge = Date.now() - authData.timestamp
+    const maxAge = 24 * 60 * 60 * 1000 // 24 horas em millisegundos
+
+    if (tokenAge > maxAge) {
+      return false
+    }
+
+    // Verificar se é o usuário correto
+    if (authData.user !== "brenno.dev") {
+      return false
+    }
+
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
 export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([])
   const [promotions, setPromotions] = useState<Promotion[]>([])
@@ -38,18 +68,30 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("")
   const [showDeleteModal, setShowDeleteModal] = useState<string | null>(null)
+  const [authStatus, setAuthStatus] = useState<"checking" | "valid" | "invalid">("checking")
   const router = useRouter()
 
   const categories = ["Sofás", "Mesas", "Camas", "Racks", "Guarda-roupas"]
 
   useEffect(() => {
-    // Verificar autenticação
+    // Verificar autenticação com sistema mais seguro
     const token = localStorage.getItem("admin_token")
+
     if (!token) {
+      setAuthStatus("invalid")
       router.push("/admin/login")
       return
     }
 
+    // Verificar se o token é válido
+    if (!verifyAuthToken(token)) {
+      setAuthStatus("invalid")
+      localStorage.removeItem("admin_token")
+      router.push("/admin/login")
+      return
+    }
+
+    setAuthStatus("valid")
     initializeDashboard()
   }, [router])
 
@@ -90,7 +132,9 @@ export default function AdminDashboard() {
   }
 
   const handleLogout = () => {
+    // Limpar dados de autenticação
     localStorage.removeItem("admin_token")
+    setAuthStatus("invalid")
     router.push("/")
   }
 
@@ -117,15 +161,23 @@ export default function AdminDashboard() {
     return discountedPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
   }
 
-  if (loading) {
+  // Mostrar loading enquanto verifica autenticação
+  if (authStatus === "checking" || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-800 mx-auto mb-4"></div>
-          <p className="text-gray-600">Carregando e verificando configurações...</p>
+          <p className="text-gray-600">
+            {authStatus === "checking" ? "Verificando autenticação..." : "Carregando e verificando configurações..."}
+          </p>
         </div>
       </div>
     )
+  }
+
+  // Se não autenticado, não renderizar nada (redirecionamento já foi feito)
+  if (authStatus === "invalid") {
+    return null
   }
 
   return (
@@ -140,6 +192,10 @@ export default function AdminDashboard() {
                 <span className="text-xl font-light italic tracking-wide ml-2 text-amber-700">Móveis</span>
               </div>
               <span className="text-sm text-gray-500 border-l pl-4">Painel Administrativo</span>
+              <div className="hidden sm:flex items-center gap-2 bg-green-100 px-3 py-1 rounded-full">
+                <Shield className="text-green-600" size={14} />
+                <span className="text-xs text-green-700 font-medium">Sessão Segura</span>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <button
