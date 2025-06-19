@@ -247,11 +247,19 @@ export async function generateStaticParams() {
 
 // Metadata para SEO
 export async function generateMetadata({ params }: ProductPageProps) {
+  if (!params?.id) {
+    return {
+      title: "Produto não encontrado - Carvalho Móveis",
+      description: "O produto que você procura não foi encontrado na Carvalho Móveis.",
+    }
+  }
+
   const product = await getProductById(params.id)
 
   if (!product) {
     return {
       title: "Produto não encontrado - Carvalho Móveis",
+      description: "O produto que você procura não foi encontrado na Carvalho Móveis.",
     }
   }
 
@@ -260,3 +268,5 @@ export async function generateMetadata({ params }: ProductPageProps) {
     description: product.description,
   }
 }
+
+
