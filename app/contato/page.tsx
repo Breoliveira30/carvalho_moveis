@@ -101,11 +101,11 @@ export default function ContatoPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-amber-700">Garantia em todos os produtos</span>
+                    <span className="text-amber-700">Suporte dedicado pós-venda</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-amber-700">Parcelamento em até 12x</span>
+                    <span className="text-amber-700">Parcelamento em até 12x, sujeito à taxa da máquina</span>
                   </li>
                 </ul>
               </div>
